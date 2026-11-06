@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ord_1793980547986",
+    "userId": "user_admin_001",
+    "userName": "Bosh Administrator",
+    "sellerId": "user_1793978988840",
+    "sellerName": "Azamar",
+    "items": [
+      {
+        "id": "ad_1793979078861",
+        "title": "Samsung a32 64 gb",
+        "price": 1200000,
+        "quantity": 1
+      }
+    ],
+    "totalAmount": 1200000,
+    "status": "Sotuvchi bilan chatda kelishilmoqda",
+    "createdAt": "2026-11-06T15:55:47.986Z"
+  },
+  {
+    "id": "ord_1793979095648",
+    "userId": "user_1793978988840",
+    "userName": "Azamar",
+    "userPhone": "998990562363",
+    "items": [
+      {
+        "id": "ad_1793979078861",
+        "title": "Samsung a32 64 gb",
+        "description": "Yaxshi yangi",
+        "price": 1200000,
+        "category": "Elektronika",
+        "city": "Bekobod",
+        "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80",
+        "userId": "user_1793978988840",
+        "authorName": "Azamar",
+        "authorPhone": "998990562363",
+        "views": 1,
+        "createdAt": "2026-11-06T15:31:18.861Z",
+        "quantity": 1
+      }
+    ],
+    "totalAmount": 1200000,
+    "deliveryAddress": "Telefon orqali kelishiladi",
+    "status": "Qabul qilindi",
+    "createdAt": "2026-11-06T15:31:35.648Z"
+  },
+  {
+    "id": "ord_001",
+    "userId": "user_azamat_002",
+    "userName": "Azamat Karimov",
+    "userPhone": "+998 90 123 45 67",
+    "items": [
+      {
+        "id": "ad_103",
+        "title": "Apple Mac Mini M2 16GB / 512GB",
+        "price": 9200000,
+        "quantity": 1
+      }
+    ],
+    "totalAmount": 9200000,
+    "status": "Yetkazilmoqda",
+    "deliveryAddress": "Toshkent sh., Yunusobod tumani, 4-mavze",
+    "createdAt": "2026-11-05T17:10:00.000Z"
+  }
+]

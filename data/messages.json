@@ -1,0 +1,78 @@
+[
+  {
+    "id": "msg_001",
+    "userId": "user_azamat_002",
+    "userName": "Azamat Karimov",
+    "userPhone": "+998 90 123 45 67",
+    "text": "Assalomu alaykum admin! Men yana yangi mahsulot qo'ymoqchi edim, PRO versiya narxi qancha va qanday faollashtiraman?",
+    "reply": "Vaalaykum assalom Azamat! PRO versiya narxi atigi 2000 so'm. Sozlamalardan PRO sotib olish tugmasini bosing yoki to'lov qilgach admin sizga tasdiqlab beradi va 5 ta bepul e'lon imkoniyati ochiladi.",
+    "repliedAt": "2026-11-05T16:00:00.000Z",
+    "createdAt": "2026-11-05T15:45:00.000Z",
+    "status": "answered"
+  },
+  {
+    "id": "msg_1793979156584",
+    "userId": "user_1793978988840",
+    "userName": "Azamar",
+    "userPhone": "998990562363",
+    "text": "Admin menga pro kere",
+    "reply": "5400 9700 1234 2316 2000som click va check kyn ochiladi'",
+    "status": "answered",
+    "createdAt": "2026-11-06T15:32:36.584Z",
+    "repliedAt": "2026-11-06T15:34:14.250Z"
+  },
+  {
+    "id": "msg_1793979258981",
+    "userId": "user_1793978988840",
+    "userName": "Azamar",
+    "userPhone": "998990562363",
+    "text": "Hop",
+    "reply": null,
+    "status": "pending",
+    "createdAt": "2026-11-06T15:34:18.981Z"
+  },
+  {
+    "id": "msg_1793979298202",
+    "userId": "user_1793978988840",
+    "userName": "Azamar",
+    "userPhone": "998990562363",
+    "text": "Boldi ishladi raxmat",
+    "reply": null,
+    "status": "pending",
+    "createdAt": "2026-11-06T15:34:58.202Z"
+  },
+  {
+    "id": "msg_1793980547984_390",
+    "senderId": "user_admin_001",
+    "senderName": "Bosh Administrator",
+    "senderPhone": "+998 99-083-26-96",
+    "receiverId": "user_1793978988840",
+    "receiverName": "Azamar",
+    "receiverPhone": "998990562363",
+    "text": "Assalomu alaykum! Men sizning \"Samsung a32 64 gb\" mahsulotingizni sotib olmoqchiman. Iltimos narxi va yetkazib berish haqida ma'lumot bersangiz.",
+    "product": {
+      "id": "ad_1793979078861",
+      "title": "Samsung a32 64 gb",
+      "price": 1200000,
+      "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80",
+      "city": "Bekobod"
+    },
+    "read": false,
+    "readAt": null,
+    "createdAt": "2026-11-06T15:55:47.984Z"
+  },
+  {
+    "id": "msg_1793981454515_201",
+    "senderId": "admin",
+    "senderName": "Bosh Administrator",
+    "senderPhone": "+998 99-083-26-96",
+    "receiverId": "user_1793978988840",
+    "receiverName": "Azamar",
+    "receiverPhone": "998990562363",
+    "text": "frwvrw",
+    "product": null,
+    "read": false,
+    "readAt": null,
+    "createdAt": "2026-11-06T16:10:54.515Z"
+  }
+]

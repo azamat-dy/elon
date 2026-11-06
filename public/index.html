@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>e'lonber.uz - O'zbekistondagi zamonaviy e'lonlar va savdo platformasi</title>
+  
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%232563eb'/><text x='50%' y='65%' font-size='60' font-weight='800' fill='white' text-anchor='middle'>e</text></svg>">
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="header-container">
+      <div class="logo-wrap" onclick="switchTab('home')">
+        <div class="logo-badge">e</div>
+        <div class="logo-text">e'lonber<span>.uz</span></div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Quick Theme Toggle -->
+        <button class="btn-header" onclick="toggleTheme()" id="themeBtn" title="Rejimni o'zgartirish">
+          <span id="themeIcon">🌙</span>
+        </button>
+
+        <!-- Admin Paneli Tugmasi (Faqat admin uchun ko'rinadi) -->
+        <button class="btn-header" id="adminHeaderBtn" style="display: none;" onclick="openAdminModal()">
+          <span>👑</span>
+          <span>Admin Panel</span>
+          <span class="badge-admin">Admin</span>
+          <span class="badge-unread-admin" id="adminHeaderUnread" style="display: none;">0</span>
+        </button>
+
+        <!-- Foydalanuvchi holati -->
+        <div id="authHeaderWrap">
+          <button class="btn-header" onclick="openAuthModal('login')">
+            <span>👤</span>
+            <span>Kirish</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SMS Banner Bildirishnomasi (Simulyatsiya qilingan SMS) -->
+  <div class="main-container" id="smsBannerWrap" style="display: none;">
+    <div class="sms-banner">
+      <div>
+        <div style="font-size: 13px; font-weight: 700; color: #38bdf8;">🔔 KELGAN SMS XABAR</div>
+        <div style="font-size: 14px; margin-top: 2px;">
+          e'lonber.uz tasdiqlash kodingiz: <span class="code-pill" id="smsBannerCode">000000</span>
+        </div>
+      </div>
+      <button class="btn-header" style="background: rgba(255,255,255,0.15); color: #fff; border: none;" onclick="autoFillSms()">
+        Kodni kiritish
+      </button>
+    </div>
+  </div>
+
+  <!-- Asosiy Konteyner -->
+  <main class="main-container">
+
+    <!-- Hero / Qidiruv & Kategoriya -->
+    <section class="hero-search-box glass-card">
+      <div class="search-row">
+        <div class="search-input-wrap">
+          <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          <input type="text" id="searchInput" class="search-input" placeholder="Mahsulot yoki xizmat qidirish..." oninput="handleSearch(this.value)">
+        </div>
+      </div>
+
+      <!-- Kategoriyalar -->
+      <div class="categories-bar" id="categoriesBar">
+        <div class="category-pill active" onclick="filterCategory('all', this)">Barchasi</div>
+        <div class="category-pill" onclick="filterCategory('Elektronika', this)">📱 Elektronika</div>
+        <div class="category-pill" onclick="filterCategory('Avtomobillar', this)">🚗 Avtomobillar</div>
+        <div class="category-pill" onclick="filterCategory('Xizmatlar', this)">🛠 Xizmatlar</div>
+        <div class="category-pill" onclick="filterCategory('Kiyim-kechak', this)">👕 Kiyim-kechak</div>
+        <div class="category-pill" onclick="filterCategory('Ko\'chmas mulk', this)">🏠 Ko'chmas mulk</div>
+        <div class="category-pill" onclick="filterCategory('Boshqa', this)">📦 Boshqa</div>
+      </div>
+    </section>
+
+    <!-- PRO Versiya taklif kartochkasi (Foydalanuvchi uchun) -->
+    <div id="userProStatusBanner" class="pro-card-highlight" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <span class="pro-badge-glow">⚡ PRO IMKONIYATI</span>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 4px;">Ko'proq e'lon berishni xohlaysizmi?</h3>
+          <p style="font-size: 13px; color: var(--text-secondary);">PRO versiya atigi 2 000 so'm va sizga 5 ta bepul e'lon joylash imkoniyatini beradi!</p>
+        </div>
+        <button class="btn-header" style="background: var(--accent-color); color: #fff; border: none; padding: 10px 18px;" onclick="requestPro()">
+          ⚡ PRO Olish (2 000 so'm)
+        </button>
+      </div>
+    </div>
+
+    <!-- E'lonlar Lentasining sarlavhasi -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h2 style="font-size: 18px; font-weight: 700;" id="feedTitle">Barcha e'lonlar</h2>
+      <span style="font-size: 13px; color: var(--text-muted);" id="adsCountLabel">0 ta e'lon</span>
+    </div>
+
+    <!-- E'lonlar panjarasi -->
+    <div class="listings-grid" id="listingsContainer">
+      <!-- JavaScript orqali to'ldiriladi -->
+    </div>
+  </main>
+
+  <!-- Pastdagi Mobil Navigatsiya menyusi (Bottom Navigation) -->
+  <nav class="bottom-nav">
+    <!-- 1. Bosh sahifa -->
+    <div class="nav-item active" id="navHome" onclick="switchTab('home')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+      </svg>
+      <span>Asosiy</span>
+    </div>
+
+    <!-- 2. Savat -->
+    <div class="nav-item" id="navCart" onclick="openCartModal()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+      </svg>
+      <span>Savat</span>
+      <span class="nav-badge" id="cartBadge" style="display: none;">0</span>
+    </div>
+
+    <!-- 3. Markaziy Ko'tarilgan PLUS tugma: E'lon qo'shish -->
+    <div class="nav-item-center" onclick="handleNewAdClick()">
+      <div class="nav-plus-btn">
+        <span>+</span>
+      </div>
+      <span class="nav-center-label">E'lon berish</span>
+    </div>
+
+    <!-- 4. Adminga murojaat (Onlayn chat) -->
+    <div class="nav-item" id="navChat" onclick="openChatModal()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+      </svg>
+      <span>Murojaat</span>
+      <span class="nav-badge" id="chatBadge" style="display: none;">0</span>
+    </div>
+
+    <!-- 5. Sozlamalar -->
+    <div class="nav-item" id="navSettings" onclick="openSettingsModal()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+      </svg>
+      <span>Sozlamalar</span>
+    </div>
+  </nav>
+
+  <!-- ==================== MODALLAR ==================== -->
+
+  <!-- 1. AUTH MODAL (Ro'yxatdan o'tish & Kirish) -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('authModal')">✕</button>
+
+      <!-- Auth Tab Switches -->
+      <div style="display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px;">
+        <button id="tabRegisterBtn" class="category-pill active" onclick="switchAuthTab('register')">Ro'yxatdan o'tish</button>
+        <button id="tabLoginBtn" class="category-pill" onclick="switchAuthTab('login')">Menda hisob bor (Kirish)</button>
+      </div>
+
+      <!-- FORM 1: RO'YXATDAN O'TISH -->
+      <div id="authRegisterSection">
+        <h3 class="modal-title">Yangi hisob ochish</h3>
+        <p class="modal-desc">O'z mahsulot va reklamalaringizni bepul joylashtirish uchun hisob oching.</p>
+
+        <!-- 1-qadam: Telefon raqami -->
+        <div id="regStep1">
+          <div class="form-group">
+            <label class="form-label">Telefon raqamingiz</label>
+            <input type="tel" id="regPhone" class="form-control" placeholder="+998 90 123 45 67">
+            <small style="color: var(--text-muted); font-size: 11px;">Raqamingizga 6 xonali tasdiqlash SMS kodi yuboriladi.</small>
+          </div>
+          <button class="btn-primary" onclick="proceedRegStep1()">SMS Kodni olish →</button>
+        </div>
+
+        <!-- 2-qadam: SMS kod & To'liq profil -->
+        <div id="regStep2" style="display: none;">
+          <!-- SMS Kod Bildirishnomasi (Modal ichida to'g'ridan-to'g'ri ko'rinadi) -->
+          <div id="modalSmsBanner" style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #fff; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; border: 1px solid rgba(56, 189, 248, 0.4); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <div style="font-size: 11px; font-weight: 700; color: #38bdf8;">🔔 SMS XABAR</div>
+              <div style="font-size: 13px; margin-top: 2px;">Tasdiqlash kodi: <b id="modalSmsCodeText" style="background:#38bdf8; color:#0f172a; padding: 2px 8px; border-radius: 4px; font-size: 16px; letter-spacing: 2px;">123456</b></div>
+            </div>
+            <button type="button" class="btn-header" style="background: rgba(255,255,255,0.2); color: #fff; border: none; padding: 6px 12px; font-size: 12px;" onclick="autoFillSms()">
+              ⚡ Kiritish
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">SMS orqali kelgan 6 xonali kod</label>
+            <input type="text" id="regCode" class="form-control" placeholder="123456" maxlength="6" style="letter-spacing: 4px; font-weight: 700; font-size: 18px; text-align: center;">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Ism va Familiyangiz</label>
+            <input type="text" id="regFullName" class="form-control" placeholder="Ismingiz va familiyangiz">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Username (foydalanuvchi nomi)</label>
+            <input type="text" id="regUsername" class="form-control" placeholder="Masalan: azamat">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Parol (boshqa telefondan kirish uchun)</label>
+            <input type="password" id="regPassword" class="form-control" placeholder="O'zingiz eslab qoladigan parol">
+          </div>
+
+          <button class="btn-primary" onclick="submitRegistration()">Ro'yxatdan o'tishni yakunlash</button>
+          <button class="btn-secondary" onclick="backToRegStep1()">← Raqamni o'zgartirish</button>
+        </div>
+      </div>
+
+      <!-- FORM 2: KIRISH (LOGIN) -->
+      <div id="authLoginSection" style="display: none;">
+        <h3 class="modal-title">Tizimga kirish</h3>
+        <p class="modal-desc">O'z hisobingizga kirish uchun telefon raqamingiz yoki username va parolingizni kiriting.</p>
+
+        <div class="form-group">
+          <label class="form-label">Telefon raqam yoki Username</label>
+          <input type="text" id="loginInput" class="form-control" placeholder="+998 90 123 45 67 yoki username" oninput="handleLoginInput(this.value)">
+        </div>
+
+        <div class="form-group" id="loginPasswordGroup">
+          <label class="form-label">Parolingiz</label>
+          <input type="password" id="loginPassword" class="form-control" placeholder="Parolingizni kiriting">
+        </div>
+
+        <!-- SMS orqali tezkor kirish bloki (agar parolni unutgan bo'lsa) -->
+        <div id="loginSmsSection" style="display: none; margin-bottom: 16px;">
+          <div id="loginModalSmsBanner" style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #fff; border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; border: 1px solid rgba(56, 189, 248, 0.4); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <div style="font-size: 11px; font-weight: 700; color: #38bdf8;">🔔 SMS KIRISH KODI</div>
+              <div style="font-size: 13px; margin-top: 2px;">Kodingiz: <b id="loginModalSmsCodeText" style="background:#38bdf8; color:#0f172a; padding: 2px 8px; border-radius: 4px; font-size: 16px; letter-spacing: 2px;">123456</b></div>
+            </div>
+            <button type="button" class="btn-header" style="background: rgba(255,255,255,0.2); color: #fff; border: none; padding: 6px 12px; font-size: 12px;" onclick="autoFillLoginSms()">
+              ⚡ Kiritish
+            </button>
+          </div>
+          <div class="form-group">
+            <label class="form-label">SMS orqali kelgan 6 xonali kod</label>
+            <input type="text" id="loginSmsCode" class="form-control" placeholder="123456" maxlength="6" style="letter-spacing: 4px; font-weight: 700; font-size: 18px; text-align: center;">
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="submitLogin()" id="btnLoginSubmit">Kirish</button>
+        <button type="button" class="btn-secondary" id="btnToggleLoginMode" onclick="toggleLoginSmsMode()">📲 SMS kod orqali tezkor kirish</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2. E'LON QO'SHISH MODAL -->
+  <div class="modal-overlay" id="adModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('adModal')">✕</button>
+      <h3 class="modal-title">Yangi e'lon joylashtirish</h3>
+      <p class="modal-desc">Mahsulotingiz yoki reklamangizni butun O'zbekistonga e'lon qiling.</p>
+
+      <form id="adForm" onsubmit="submitNewAd(event)">
+        <div class="form-group">
+          <label class="form-label">Mahsulot yoki reklama nomi *</label>
+          <input type="text" id="adTitle" class="form-control" placeholder="Masalan: iPhone 13 128GB" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Kategoriya *</label>
+            <select id="adCategory" class="form-control">
+              <option value="Elektronika">📱 Elektronika</option>
+              <option value="Avtomobillar">🚗 Avtomobillar</option>
+              <option value="Xizmatlar">🛠 Xizmatlar</option>
+              <option value="Kiyim-kechak">👕 Kiyim-kechak</option>
+              <option value="Ko'chmas mulk">🏠 Ko'chmas mulk</option>
+              <option value="Boshqa">📦 Boshqa</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Narxi (so'mda) *</label>
+            <input type="number" id="adPrice" class="form-control" placeholder="5 400 000" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Shahar / Viloyat</label>
+          <input type="text" id="adCity" class="form-control" placeholder="Toshkent">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Mahsulot rasmi</label>
+          <input type="file" id="adPhotoFile" class="form-control" accept="image/*">
+          <div style="margin-top: 6px; font-size: 12px; color: var(--text-muted);">yoki rasm URL manzilini kiriting:</div>
+          <input type="text" id="adPhotoUrl" class="form-control" placeholder="https://..." style="margin-top: 4px;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Batafsil tavsif</label>
+          <textarea id="adDescription" class="form-control" placeholder="Holati, xususiyatlari, yetkazib berish haqida..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" id="btnSubmitAd">E'lonni joylash</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. SOZLAMALAR MODAL -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('settingsModal')">✕</button>
+      <h3 class="modal-title">Sozlamalar</h3>
+      <p class="modal-desc">Profil sozlamalari, ko'rinish va xizmatlar.</p>
+
+      <!-- PRO Versiya kartasi -->
+      <div class="pro-card-highlight">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <span class="pro-badge-glow">⚡ PRO TARIF</span>
+            <div style="font-size: 18px; font-weight: 800; margin-top: 4px;">2 000 so'm</div>
+          </div>
+          <div id="userProStatusBadge">
+            <span class="badge-pro" style="background: var(--danger-color);" id="settingsLockBadge">🔒 PRO Yo'q</span>
+          </div>
+        </div>
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 10px 0;">
+          PRO tarif sizga <b>5 ta bepul e'lon</b> joylashtirish imkoniyatini taqdim etadi.
+        </p>
+        <button class="btn-primary" onclick="requestPro()" id="btnBuyPro">
+          ⚡ PRO Versiyani sotib olish (2 000 so'm)
+        </button>
+      </div>
+
+      <!-- Tungi / Kunduzgi rejim (Night mode / Day mode) -->
+      <div class="glass-card" style="padding: 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <div style="font-weight: 600; font-size: 14px;">Mavzu (Night / Day mode)</div>
+          <div style="font-size: 12px; color: var(--text-muted);" id="themeModeLabel">Kunduzgi rejim faol</div>
+        </div>
+        <button class="btn-header" onclick="toggleTheme()">
+          <span id="themeToggleLabel">🌙 Tungi rejim</span>
+        </button>
+      </div>
+
+      <!-- Adminga murojaat tugmasi -->
+      <div class="glass-card" style="padding: 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="openChatModal()">
+        <div>
+          <div style="font-weight: 600; font-size: 14px;">Adminga onlayn murojaat</div>
+          <div style="font-size: 12px; color: var(--text-muted);">Savol va takliflaringizni yozing</div>
+        </div>
+        <span style="font-size: 18px;">💬</span>
+      </div>
+
+      <!-- Foydalanuvchi ma'lumotlari -->
+      <div id="settingsUserInfo" style="background: var(--bg-input); padding: 14px; border-radius: 12px; margin-bottom: 16px;">
+        <div style="font-size: 12px; color: var(--text-muted);">Sizning profilingiz:</div>
+        <div style="font-weight: 700; font-size: 15px; margin-top: 2px;" id="settingsUserName">Mehmon</div>
+        <div style="font-size: 13px; color: var(--text-secondary);" id="settingsUserPhone">-</div>
+        <div style="font-size: 12px; margin-top: 6px; color: var(--accent-color); font-weight: 600;" id="settingsAdsLimit">E'lon limitingiz: 1 ta</div>
+      </div>
+
+      <button class="btn-secondary" id="logoutBtn" style="color: var(--danger-color); display: none;" onclick="logout()">
+        🚪 Hisobdan chiqish
+      </button>
+    </div>
+  </div>
+
+  <!-- 4. XABARLAR VA CHAT MODALI (Telegram uslubida) -->
+  <div class="modal-overlay" id="chatModal">
+    <div class="modal-box" style="max-width: 780px; padding: 16px;">
+      <button class="modal-close-btn" onclick="closeModal('chatModal')">✕</button>
+      <h3 class="modal-title" style="margin-bottom: 2px;">💬 Xabarlar va Murojaatlar</h3>
+      <p class="modal-desc" style="margin-bottom: 12px;">Admin va sotuvchilar bilan bevosita onlayn suhbatlashing.</p>
+
+      <div class="chat-container-split">
+        <!-- Chap: Dialoglar (suhbatdoshlar) ro'yxati -->
+        <div class="chat-dialogs-sidebar">
+          <div class="chat-dialogs-header">
+            <span>SUHBATLAR</span>
+            <button class="btn-header" style="padding: 2px 8px; font-size: 11px;" onclick="startAdminChat()">+ Adminga yozish</button>
+          </div>
+          <div class="chat-dialogs-list" id="chatDialogsList">
+            <!-- JS to'ldiradi -->
+          </div>
+        </div>
+
+        <!-- O'ng: Tanlangan suhbatdosh bilan Chat -->
+        <div class="chat-main-area">
+          <div class="chat-header-bar">
+            <div class="chat-partner-info">
+              <span style="font-size: 20px;">👤</span>
+              <div>
+                <div class="chat-partner-name" id="chatPartnerName">Bosh Administrator</div>
+                <div id="chatPartnerStatus" class="status-indicator online">
+                  <span class="status-dot"></span>
+                  <span id="chatPartnerStatusText">Online</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-window">
+            <div class="chat-messages" id="chatMessages">
+              <!-- Xabarlar JS orqali joylanadi -->
+            </div>
+
+            <form class="chat-input-bar" onsubmit="sendChatMessage(event)">
+              <input type="text" id="chatInput" class="form-control" placeholder="Xabaringizni yozing..." autocomplete="off">
+              <button type="submit" class="btn-header" style="background: var(--accent-color); color: #fff; border: none; padding: 0 16px;">
+                Yuborish
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. SAVAT (CART) MODAL -->
+  <div class="modal-overlay" id="cartModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('cartModal')">✕</button>
+      <h3 class="modal-title">Xarid savati</h3>
+      <p class="modal-desc">Tanlangan mahsulotlarni rasmiylashtiring va sotib oling.</p>
+
+      <div id="cartItemsList" style="max-height: 280px; overflow-y: auto; margin-bottom: 16px;">
+        <!-- JS to'ldiradi -->
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-top: 1px solid var(--border-light); margin-bottom: 16px;">
+        <span style="font-weight: 600;">Jami to'lov:</span>
+        <span style="font-size: 18px; font-weight: 800; color: var(--accent-color);" id="cartTotalSum">0 so'm</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Yetkazib berish manzili yoki izoh</label>
+        <input type="text" id="orderAddress" class="form-control" placeholder="Toshkent sh., Yunusobod...">
+      </div>
+
+      <button class="btn-primary" onclick="checkoutOrder()" id="btnCheckout">
+        Sotib olishni tasdiqlash
+      </button>
+    </div>
+  </div>
+
+  <!-- 6. ADMIN PANEL MODAL (Faqat Bosh Administrator uchun) -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal-box" style="max-width: 850px;">
+      <button class="modal-close-btn" onclick="closeModal('adminModal')">✕</button>
+
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+        <span style="font-size: 24px;">👑</span>
+        <h3 class="modal-title" style="margin: 0;">Bosh Administrator Paneli</h3>
+      </div>
+      <p class="modal-desc">Foydalanuvchilar, e'lonlar, PRO qulfchalari va kelgan murojaatlarni boshqaring.</p>
+
+      <!-- Admin Stat Kartalari -->
+      <div class="admin-grid" id="adminStatsGrid">
+        <div class="admin-stat-card">
+          <div style="font-size: 12px; color: var(--text-muted);">Jami foydalanuvchilar</div>
+          <div class="admin-stat-val" id="statUsersCount">0</div>
+        </div>
+        <div class="admin-stat-card">
+          <div style="font-size: 12px; color: var(--text-muted);">PRO foydalanuvchilar</div>
+          <div class="admin-stat-val" style="color: var(--success-color);" id="statProCount">0</div>
+        </div>
+        <div class="admin-stat-card">
+          <div style="font-size: 12px; color: var(--text-muted);">Faol e'lonlar</div>
+          <div class="admin-stat-val" id="statAdsCount">0</div>
+        </div>
+        <div class="admin-stat-card">
+          <div style="font-size: 12px; color: var(--text-muted);">Yangi murojaatlar</div>
+          <div class="admin-stat-val" style="color: var(--warning-color);" id="statMsgsCount">0</div>
+        </div>
+      </div>
+
+      <!-- Admin Tab Switch -->
+      <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px;">
+        <button id="adminTabUsersBtn" class="category-pill active" onclick="switchAdminTab('users')">👥 Foydalanuvchilar & PRO</button>
+        <button id="adminTabMsgsBtn" class="category-pill" onclick="switchAdminTab('messages')">
+          💬 Murojaatlar & Chat
+          <span class="badge-unread-admin" id="adminTabUnread" style="display: none;">0</span>
+        </button>
+        <button id="adminTabAdsBtn" class="category-pill" onclick="switchAdminTab('ads')">📦 Barcha e'lonlar</button>
+      </div>
+
+      <!-- TAB 1: FOYDALANUVCHILAR RO'YXATI (PRO QULFCHA BILAN) -->
+      <div id="adminSectionUsers">
+        <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+          💡 <b>Qulfcha haqida:</b> Qizil qulfcha (🔒) - PRO yo'q (1 ta bepul e'lon). Qulfchani bossangiz u Yashil rangga (🔓) aylanadi va foydalanuvchiga 5 ta bepul e'lon imkoniyati beriladi!
+        </div>
+        <div id="adminUsersList" style="max-height: 400px; overflow-y: auto;">
+          <!-- JS to'ldiradi -->
+        </div>
+      </div>
+
+      <!-- TAB 2: MUROJAATLAR VA CHAT (Bitta odam bitta chat) -->
+      <div id="adminSectionMessages" style="display: none;">
+        <div class="chat-container-split" style="height: 420px;">
+          <!-- Chap tomonda: Murojaat qilgan odamlar ro'yxati -->
+          <div class="chat-dialogs-sidebar" style="width: 250px;">
+            <div class="chat-dialogs-header">FOYDALANUVCHILAR</div>
+            <div class="chat-dialogs-list" id="adminDialogsList">
+              <!-- JS to'ldiradi -->
+            </div>
+          </div>
+          <!-- O'ng tomonda: Chat oynasi va javob yozish -->
+          <div class="chat-main-area">
+            <div class="chat-header-bar">
+              <div class="chat-partner-info">
+                <span style="font-size: 18px;">👤</span>
+                <div>
+                  <div class="chat-partner-name" id="adminChatPartnerName">Suhbatdoshni tanlang</div>
+                  <div style="font-size: 11px; color: var(--text-muted);" id="adminChatPartnerPhone">-</div>
+                </div>
+              </div>
+            </div>
+            <div class="chat-window">
+              <div class="chat-messages" id="adminChatMessages">
+                <div style="text-align: center; color: var(--text-muted); padding: 40px;">
+                  Chap tomondan xabar yozgan foydalanuvchini tanlang
+                </div>
+              </div>
+              <form class="chat-input-bar" id="adminChatInputBar" onsubmit="submitAdminChatMessage(event)" style="display: none;">
+                <input type="text" id="adminChatInput" class="form-control" placeholder="Foydalanuvchiga javob yozish..." autocomplete="off">
+                <button type="submit" class="btn-primary" style="width: auto; padding: 0 18px; white-space: nowrap;">
+                  Javob berish
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: BARCHA E'LONLAR MODERATSIYASI -->
+      <div id="adminSectionAds" style="display: none;">
+        <div id="adminAdsList" style="max-height: 400px; overflow-y: auto;">
+          <!-- JS to'ldiradi -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. FOYDALANUVCHI PROFILI TAFSILOTLARI MODALI (Admin ko'radi) -->
+  <div class="modal-overlay" id="userDetailsModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('userDetailsModal')">✕</button>
+      <h3 class="modal-title" id="detailUserTitle">Foydalanuvchi profili</h3>
+      <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;" id="detailUserMeta">-</div>
+
+      <div style="margin-bottom: 20px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Qo'ygan e'lonlari:</h4>
+        <div id="detailUserAdsList" style="max-height: 180px; overflow-y: auto; background: var(--bg-input); border-radius: 10px; padding: 10px;">
+          <!-- JS -->
+        </div>
+      </div>
+
+      <div>
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Sotib olgan mahsulotlari (xaridlari):</h4>
+        <div id="detailUserOrdersList" style="max-height: 180px; overflow-y: auto; background: var(--bg-input); border-radius: 10px; padding: 10px;">
+          <!-- JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. E'LONNI TO'LIQ KO'RISH MODAL (Batafsil ma'lumot) -->
+  <div class="modal-overlay" id="viewAdModal">
+    <div class="modal-box" style="max-width: 600px;">
+      <button class="modal-close-btn" onclick="closeModal('viewAdModal')">✕</button>
+      
+      <div id="viewAdContent">
+        <!-- JS to'ldiradi -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast xabarnoma -->
+  <div class="toast-msg" id="toastMsg">Xabar matni</div>
+
+  <!-- JavaScript Kodlari -->
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

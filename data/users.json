@@ -1,0 +1,57 @@
+[
+  {
+    "id": "user_admin_001",
+    "username": "admin",
+    "fullName": "Bosh Administrator",
+    "phone": "+998 99-083-26-96",
+    "password": "admin",
+    "role": "admin",
+    "pro": true,
+    "maxAds": 9999,
+    "createdAt": "2026-11-01T08:00:00.000Z"
+  },
+  {
+    "id": "user_azamat_002",
+    "username": "azamat",
+    "fullName": "Azamat Karimov",
+    "phone": "+998 90 123 45 67",
+    "password": "AZAMAT011",
+    "role": "user",
+    "pro": false,
+    "maxAds": 1,
+    "createdAt": "2026-11-05T14:20:00.000Z"
+  },
+  {
+    "id": "user_sarvar_003",
+    "username": "sarvar_uz",
+    "fullName": "Sarvar Aliyev",
+    "phone": "+998 97 765 43 21",
+    "password": "SARVAR2026",
+    "role": "user",
+    "pro": false,
+    "maxAds": 1,
+    "createdAt": "2026-11-04T10:15:00.000Z"
+  },
+  {
+    "id": "user_1793978963457",
+    "username": "user_8877",
+    "fullName": "Foydalanuvchi (+998 90 999 88 77)",
+    "phone": "+998 90 999 88 77",
+    "password": "PASS_8877",
+    "role": "user",
+    "pro": false,
+    "maxAds": 1,
+    "createdAt": "2026-11-06T15:29:23.457Z"
+  },
+  {
+    "id": "user_1793978988840",
+    "username": "admin n1",
+    "fullName": "Azamar",
+    "phone": "998990562363",
+    "password": "azamatadmni",
+    "role": "user",
+    "pro": false,
+    "maxAds": 1,
+    "createdAt": "2026-11-06T15:29:48.840Z"
+  }
+]
